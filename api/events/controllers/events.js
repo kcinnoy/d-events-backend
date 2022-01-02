@@ -8,7 +8,7 @@ const {sanitizeEntity} = require('strapi-utils')
 
 module.exports = {
     //create event with logged in user
-    async create(ctx) {
+        async create(ctx) {
         let entity;
         if (ctx.is('multipart')) {
           const { data, files } = parseMultipartData(ctx);
@@ -20,7 +20,8 @@ module.exports = {
         }
         return sanitizeEntity(entity, { model: strapi.models.events });
       },
-    // update user event
+    
+    //update user event
     async update(ctx) {
         const { id } = ctx.params;
     
@@ -47,22 +48,19 @@ module.exports = {
         return sanitizeEntity(entity, { model: strapi.models.events });
       },
 
-    ///Delete a user event
-    async delete(ctx) {
+    //Delete a user event
+        async delete(ctx) {
         const { id } = ctx.params;
-    
-        let entity;
     
         const [events] = await strapi.services.events.find({
           id: ctx.params.id,
-          'user.id': ctx.state.user.id,
+          "user.id": ctx.state.user.id,
         });
     
         if (!events) {
           return ctx.unauthorized(`You can't update this entry`);
         }
     
-       
         const entity = await strapi.services.events.delete({ id });
         return sanitizeEntity(entity, { model: strapi.models.events });
       },
